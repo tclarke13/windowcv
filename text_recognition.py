@@ -85,17 +85,17 @@ args = vars(ap.parse_args())
 # load the input image and grab the image dimensions
 image = cv2.imread(args["image"])
 orig = image.copy()
-(origH, origW) = image.shape[:2]
+#(origH, origW) = image.shape[:2]
 
 # set the new width and height and then determine the ratio in change
 # for both the width and height
-(newW, newH) = (args["width"], args["height"])
-rW = origW / float(newW)
-rH = origH / float(newH)
+#(newW, newH) = (args["width"], args["height"])
+#rW = origW / float(newW)
+#rH = origH / float(newH)
 
 # resize the image and grab the new image dimensions
-image = cv2.resize(image, (newW, newH))
-(H, W) = image.shape[:2]
+#image = cv2.resize(image, (newW, newH))
+#(H, W) = image.shape[:2]
 
 # define the two output layer names for the EAST detector model that
 # we are interested -- the first is the output probabilities and the
@@ -105,44 +105,31 @@ layerNames = [
 	"feature_fusion/concat_3"]
 
 # load the pre-trained EAST text detector
-print("[INFO] loading EAST text detector...")
-net = cv2.dnn.readNet(args["east"])
+#print("[INFO] loading EAST text detector...")
+#net = cv2.dnn.readNet(args["east"])
 
 # construct a blob from the image and then perform a forward pass of
 # the model to obtain the two output layer sets
-blob = cv2.dnn.blobFromImage(image, 1.0, (W, H),
-	(123.68, 116.78, 103.94), swapRB=True, crop=False)
-net.setInput(blob)
-(scores, geometry) = net.forward(layerNames)
+#blob = cv2.dnn.blobFromImage(image, 1.0, (W, H),
+#	(123.68, 116.78, 103.94), swapRB=True, crop=False)
+#net.setInput(blob)
+#(scores, geometry) = net.forward(layerNames)
 
 # decode the predictions, then  apply non-maxima suppression to
 # suppress weak, overlapping bounding boxes
-(rects, confidences) = decode_predictions(scores, geometry)
-boxes = non_max_suppression(np.array(rects), probs=confidences)
+#(rects, confidences) = decode_predictions(scores, geometry)
+#boxes = non_max_suppression(np.array(rects), probs=confidences)
+
+chipsize = (110,60)
+chipcorners = [(940,310),(1680,450),(1680,900),(940,1040),(200,900),(200,450)]
+boxes = [(c[0], c[1], c[0] + chipsize[0], c[1] + chipsize[1]) for c in chipcorners]
 
 # initialize the list of results
 results = []
 
 # loop over the bounding boxes
 for (startX, startY, endX, endY) in boxes:
-	# scale the bounding box coordinates based on the respective
-	# ratios
-	startX = int(startX * rW)
-	startY = int(startY * rH)
-	endX = int(endX * rW)
-	endY = int(endY * rH)
 
-	# in order to obtain a better OCR of the text we can potentially
-	# apply a bit of padding surrounding the bounding box -- here we
-	# are computing the deltas in both the x and y directions
-	dX = int((endX - startX) * args["padding"])
-	dY = int((endY - startY) * args["padding"])
-
-	# apply padding to each side of the bounding box, respectively
-	startX = max(0, startX - dX)
-	startY = max(0, startY - dY)
-	endX = min(origW, endX + (dX * 2))
-	endY = min(origH, endY + (dY * 2))
 
 	# extract the actual padded ROI
 	roi = orig[startY:endY, startX:endX]
@@ -180,5 +167,5 @@ for ((startX, startY, endX, endY), text) in results:
 	cv2.putText(output, text, (startX, startY - 20),
 		cv2.FONT_HERSHEY_SIMPLEX, 1.2, (0, 0, 255), 3)
 
-cv2.imshow("Text Detection", output)
+cv2.imshow("Text Detection", cv2.resize(output, (int(output.shape[1]/2), int(output.shape[0]/2))))
 cv2.waitKey(0)
