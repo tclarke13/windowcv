@@ -124,6 +124,10 @@ chipsize = (110,60)
 chipcorners = [(940,310),(1680,450),(1680,900),(940,1040),(200,900),(200,450)]
 boxes = [(c[0], c[1], c[0] + chipsize[0], c[1] + chipsize[1]) for c in chipcorners]
 
+betsize = (50,40)
+betcorners = [(1165,395),(1490,530),(1550,800),(960,850),(370,800),(420,525)]
+boxes += [(b[0], b[1], b[0] + betsize[0], b[1] + betsize[1]) for b in betcorners]
+
 # initialize the list of results
 results = []
 
