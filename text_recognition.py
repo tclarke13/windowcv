@@ -128,6 +128,10 @@ betsize = (50,40)
 betcorners = [(1165,395),(1490,530),(1550,800),(960,850),(370,800),(420,525)]
 boxes += [(b[0], b[1], b[0] + betsize[0], b[1] + betsize[1]) for b in betcorners]
 
+cardsize = (60,80)
+cardcorners = [(580,580),(740,580),(900,580),(1060,580),(1220,580)]
+boxes += [(cc[0], cc[1], cc[0] + cardsize[0], cc[1] + cardsize[1]) for cc in cardcorners]
+
 # initialize the list of results
 results = []
 
