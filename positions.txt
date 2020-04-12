@@ -1,0 +1,10 @@
+2392x1440
+size: 110x60
+point is top left of box
+from top going clockwise:
+player 1 - (940,310)
+player 2 - (1680,450)
+player 3 - (1680,900)
+player 4 - (940, 1040)
+player 5 - (200, 900)
+player 6 - (200,450)
