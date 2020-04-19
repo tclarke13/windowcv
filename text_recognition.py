@@ -68,7 +68,7 @@ def decode_predictions(scores, geometry):
 
 # construct the argument parser and parse the arguments
 ap = argparse.ArgumentParser()
-ap.add_argument("-i", "--image", type=str,
+ap.add_argument("-i", "--image", type=str, default='images/pokergame/output_highres_39.png',
 	help="path to input image")
 ap.add_argument("-east", "--east", type=str,
 	help="path to input EAST text detector")
@@ -128,9 +128,17 @@ betsize = (50,40)
 betcorners = [(1165,395),(1490,530),(1550,800),(960,850),(370,800),(420,525)]
 boxes += [(b[0], b[1], b[0] + betsize[0], b[1] + betsize[1]) for b in betcorners]
 
-cardsize = (60,80)
-cardcorners = [(580,580),(740,580),(900,580),(1060,580),(1220,580)]
+cardsize = (70,85)
+cardcorners = [(580,580),(745,580),(900,580),(1060,580),(1220,580)]
 boxes += [(cc[0], cc[1], cc[0] + cardsize[0], cc[1] + cardsize[1]) for cc in cardcorners]
+
+mycardsize = (50,60)
+mycardcorners = [(865,895),(970,895)]
+boxes += [(mc[0], mc[1], mc[0] + mycardsize[0], mc[1] + mycardsize[1]) for mc in mycardcorners]
+
+mainpotsize = (50,35)
+mainpotcorners = [(1005,510)]
+boxes += [(mp[0], mp[1], mp[0] + mainpotsize[0], mp[1] + mainpotsize[1]) for mp in mainpotcorners]
 
 # initialize the list of results
 results = []
